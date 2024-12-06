@@ -2,12 +2,12 @@ name: CMake on a single platform
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 env:
-  BUILD_TYPE: Release
+  BUILD_TYPE: Debug  # Change to "Release" if needed
 
 jobs:
   build:
@@ -16,19 +16,30 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Pull Dependencies
-      run: sudo apt-get update && sudo apt-get install libgtest-dev libgmock-dev -y
+    - name: Install Python 3 and pip
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3 python3-pip
 
-    - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON
+    - name: Install Conan
+      run: |
+        pip3 install conan
 
-    - name: Build
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+    - name: Install dependencies with Conan
+      run: |
+        conan install . -s build_type=${{env.BUILD_TYPE}} --build=missing
 
-    - name: Test
+    - name: Configure CMake with Conan preset
+      run: |
+        cmake --preset conan-${{env.BUILD_TYPE}}
+
+    - name: Build the project
+      run: |
+        cmake --build --preset conan-${{env.BUILD_TYPE}}
+
+    - name: Run tests
       working-directory: ${{github.workspace}}/build
       run: |
         echo "Running tests..."
         ctest -C ${{env.BUILD_TYPE}}
-      # Fail if any tests fail
       continue-on-error: false

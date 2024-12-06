@@ -15,7 +15,7 @@ target_include_directories(mylib PUBLIC lib)
 add_executable(app app/app.cc)
 target_link_libraries(app mylib)
 
-option(BUILD_TESTS "Build unit tests." OFF)
+option(BUILD_TESTS "Build unit tests." ON)
 if(BUILD_TESTS)
   enable_testing()
   find_package(GTest REQUIRED)
