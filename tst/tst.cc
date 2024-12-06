@@ -15,7 +15,7 @@ TEST(AlgebraClass, SquareTwo) {
     
 
     auto expect = alg.squareTwo(5);
-    EXPECT_NEAR(expect, 25999.0, 1e-7);
+    EXPECT_NEAR(expect, 25.0, 1e-7);
     EXPECT_NEAR(alg.squareTwo(25), 625.0, 1e-7);
 }
 
