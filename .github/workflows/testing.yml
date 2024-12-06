@@ -25,6 +25,10 @@ jobs:
       run: |
         pip3 install conan
 
+    - name: Detect and create Conan default profile
+      run: |
+        conan profile detect  # Automatically creates the default profile
+
     - name: Install dependencies with Conan
       run: |
         conan install . -s build_type=${{env.BUILD_TYPE}} --build=missing
