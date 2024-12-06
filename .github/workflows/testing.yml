@@ -43,7 +43,7 @@ jobs:
         cmake --build --preset conan-${{env.PRESET_TYPE}}
 
     - name: Run tests
-      working-directory: ${{github.workspace}}/build
+      working-directory: ${{github.workspace}}/build/Debug
       run: |
         echo "Running tests..."
         ctest -C ${{env.BUILD_TYPE}}
