@@ -8,6 +8,7 @@ on:
 
 env:
   BUILD_TYPE: Debug  # Change to "Release" if needed
+  PRESET_TYPE: debug  # Change to "Release" if needed
 
 jobs:
   build:
@@ -35,11 +36,11 @@ jobs:
 
     - name: Configure CMake with Conan preset
       run: |
-        cmake --preset conan-${{env.BUILD_TYPE}}
+        cmake --preset conan-${{env.PRESET_TYPE}}
 
     - name: Build the project
       run: |
-        cmake --build --preset conan-${{env.BUILD_TYPE}}
+        cmake --build --preset conan-${{env.PRESET_TYPE}}
 
     - name: Run tests
       working-directory: ${{github.workspace}}/build
